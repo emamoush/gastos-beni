@@ -1,0 +1,346 @@
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Fraunces:ital,opsz,wght@1,9..144,300&family=Inter:wght@400;500;600&display=swap');
+
+:root {
+  --bg: #F5F7F1;
+  --card: #FFFFFF;
+  --ink: #33362F;
+  --ink-soft: #6B6E63;
+  --line: #E3E7DC;
+  --sage: #7C9473;
+  --sage-dark: #5E7355;
+  --rose: #C98F8A;
+  --rose-bg: #F6E6E4;
+  --blue: #7E9DB0;
+  --blue-bg: #E7EEF1;
+  --gold: #E0B478;
+  --gold-bg: #FBF0E0;
+  --danger: #BD6B5A;
+  --radius-card: 18px;
+  --radius-field: 10px;
+  --shadow: 0 1px 2px rgba(51, 54, 47, 0.06);
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: 'Inter', system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3 { font-family: 'Space Grotesk', sans-serif; margin: 0; }
+
+button, input, select { font-family: inherit; }
+
+.oculto { display: none !important; }
+
+/* ---------- Pantalla de login ---------- */
+
+.login-wrap {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+}
+
+.login-card {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-card);
+  padding: 40px 36px;
+  width: 100%;
+  max-width: 380px;
+  box-shadow: var(--shadow);
+}
+
+.login-card .marca {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  margin-bottom: 6px;
+}
+
+.login-card .marca .punto {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--rose), var(--blue));
+  display: inline-block;
+}
+
+.login-card h1 { font-size: 22px; }
+.login-card p.sub { color: var(--ink-soft); margin: 6px 0 28px; font-size: 14px; }
+
+.campo { margin-bottom: 16px; }
+.campo label {
+  display: block;
+  font-size: 13px;
+  color: var(--ink-soft);
+  margin-bottom: 6px;
+}
+.campo input, .campo select {
+  width: 100%;
+  padding: 11px 12px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-field);
+  font-size: 14px;
+  color: var(--ink);
+  background: #fff;
+}
+.campo input:focus, .campo select:focus, button:focus-visible {
+  outline: 2px solid var(--sage);
+  outline-offset: 1px;
+}
+
+.btn-principal {
+  width: 100%;
+  padding: 12px;
+  border: none;
+  border-radius: var(--radius-field);
+  background: var(--sage);
+  color: #fff;
+  font-weight: 600;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background 0.15s ease;
+}
+.btn-principal:hover { background: var(--sage-dark); }
+.btn-principal:disabled { opacity: 0.6; cursor: default; }
+
+.error-msg {
+  background: #FBEAE7;
+  color: var(--danger);
+  border-radius: var(--radius-field);
+  padding: 10px 12px;
+  font-size: 13px;
+  margin-bottom: 16px;
+}
+
+/* ---------- App principal ---------- */
+
+.topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px 32px;
+  border-bottom: 1px solid var(--line);
+}
+
+.topbar .marca { display: flex; align-items: center; gap: 10px; }
+.topbar .marca .punto {
+  width: 10px; height: 10px; border-radius: 50%;
+  background: linear-gradient(135deg, var(--rose), var(--blue));
+}
+.topbar h1 { font-size: 18px; }
+.topbar .quien { font-size: 13px; color: var(--ink-soft); }
+
+.btn-texto {
+  background: none;
+  border: none;
+  color: var(--ink-soft);
+  font-size: 13px;
+  cursor: pointer;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+main {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 32px 24px 64px;
+}
+
+/* Hero: saldo */
+.saldo-hero {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-card);
+  padding: 32px;
+  margin-bottom: 24px;
+  box-shadow: var(--shadow);
+  text-align: center;
+}
+.saldo-hero .etiqueta { color: var(--ink-soft); font-size: 14px; margin-bottom: 10px; }
+.saldo-hero .numero {
+  font-family: 'Fraunces', serif;
+  font-style: italic;
+  font-weight: 300;
+  font-size: 48px;
+  line-height: 1.1;
+}
+.saldo-hero .numero .quien-color { font-style: normal; font-family: 'Space Grotesk', sans-serif; }
+.saldo-hero .detalle { color: var(--ink-soft); font-size: 13px; margin-top: 10px; }
+
+/* Totales por persona */
+.totales {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+.stat-card {
+  border-radius: var(--radius-card);
+  padding: 20px;
+  border: 1px solid var(--line);
+}
+.stat-card.abigail { background: var(--rose-bg); }
+.stat-card.bruno { background: var(--blue-bg); }
+.stat-card .nombre { font-weight: 600; font-size: 14px; margin-bottom: 4px; }
+.stat-card .monto { font-family: 'Space Grotesk', sans-serif; font-size: 26px; font-weight: 600; }
+.stat-card .cant { font-size: 12px; color: var(--ink-soft); margin-top: 2px; }
+
+/* Formulario nuevo gasto */
+.panel {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-card);
+  padding: 24px;
+  margin-bottom: 24px;
+  box-shadow: var(--shadow);
+}
+.panel h2 { font-size: 15px; margin-bottom: 16px; }
+
+.form-gasto {
+  display: grid;
+  grid-template-columns: 1fr 2fr 1fr 1fr auto;
+  gap: 12px;
+  align-items: end;
+}
+.form-gasto .campo { margin-bottom: 0; }
+
+.pill-select {
+  display: flex;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-field);
+  overflow: hidden;
+}
+.pill-select button {
+  flex: 1;
+  padding: 11px 0;
+  border: none;
+  background: #fff;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--ink-soft);
+  cursor: pointer;
+}
+.pill-select button.activo.abigail { background: var(--rose); color: #fff; }
+.pill-select button.activo.bruno { background: var(--blue); color: #fff; }
+
+.chip-fijo {
+  padding: 11px 0;
+  text-align: center;
+  border-radius: var(--radius-field);
+  font-size: 13px;
+  font-weight: 600;
+  color: #fff;
+}
+.chip-fijo.abigail { background: var(--rose); }
+.chip-fijo.bruno { background: var(--blue); }
+
+.btn-agregar {
+  padding: 11px 18px;
+  border: none;
+  border-radius: var(--radius-field);
+  background: var(--sage);
+  color: #fff;
+  font-weight: 600;
+  font-size: 14px;
+  cursor: pointer;
+  white-space: nowrap;
+}
+.btn-agregar:hover { background: var(--sage-dark); }
+
+/* Listado de gastos */
+.lista-titulo {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+.lista-titulo h2 { font-size: 15px; }
+
+.filtro-tabs { display: flex; gap: 6px; }
+.filtro-tabs button {
+  padding: 6px 12px;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  background: #fff;
+  font-size: 12px;
+  color: var(--ink-soft);
+  cursor: pointer;
+}
+.filtro-tabs button.activo { background: var(--ink); color: #fff; border-color: var(--ink); }
+
+.tabla-gastos {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-card);
+  overflow: hidden;
+}
+
+.fila-gasto {
+  display: grid;
+  grid-template-columns: 100px 1fr 110px 100px 60px;
+  align-items: center;
+  padding: 14px 20px;
+  border-bottom: 1px solid var(--line);
+  font-size: 14px;
+}
+.fila-gasto:last-child { border-bottom: none; }
+.fila-gasto .fecha { color: var(--ink-soft); font-size: 13px; }
+.fila-gasto .concepto { font-weight: 500; }
+.fila-gasto .importe { font-family: 'Space Grotesk', sans-serif; font-weight: 600; text-align: right; }
+
+.etiqueta-pagador {
+  display: inline-block;
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 600;
+  text-align: center;
+}
+.etiqueta-pagador.abigail { background: var(--rose-bg); color: var(--rose); }
+.etiqueta-pagador.bruno { background: var(--blue-bg); color: var(--blue); }
+
+.btn-borrar {
+  background: none;
+  border: none;
+  color: var(--ink-soft);
+  cursor: pointer;
+  font-size: 13px;
+  justify-self: end;
+}
+.btn-borrar:hover { color: var(--danger); }
+
+.vacio {
+  text-align: center;
+  padding: 48px 20px;
+  color: var(--ink-soft);
+  font-size: 14px;
+}
+
+/* Responsive */
+@media (max-width: 720px) {
+  .totales { grid-template-columns: 1fr; }
+  .form-gasto { grid-template-columns: 1fr; }
+  .fila-gasto {
+    grid-template-columns: 1fr auto;
+    grid-template-areas:
+      "concepto concepto"
+      "fecha pagador"
+      "importe borrar";
+    row-gap: 6px;
+    padding: 14px 16px;
+  }
+  .fila-gasto .concepto { grid-area: concepto; }
+  .fila-gasto .fecha { grid-area: fecha; }
+  .fila-gasto .pagador-wrap { grid-area: pagador; justify-self: start; }
+  .fila-gasto .importe { grid-area: importe; text-align: left; }
+  .fila-gasto .btn-borrar { grid-area: borrar; }
+  .topbar { padding: 16px; }
+  main { padding: 20px 16px 48px; }
+}
