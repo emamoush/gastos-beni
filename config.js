@@ -5,6 +5,6 @@
 // Estos datos NO son secretos, están pensados para usarse en el navegador.
 
 window.SUPABASE_CONFIG = {
-  SUPABASE_URL: "https://TU-PROYECTO.supabase.co",
-  SUPABASE_ANON_KEY: "TU_ANON_KEY_ACA",
+  SUPABASE_URL: "https://qlkrafndhjznuysvycsu.supabase.co",
+  SUPABASE_ANON_KEY: "sb_publishable_IuaNX1iALV93f8VZwqWvLg_j25hmNor",
 };
