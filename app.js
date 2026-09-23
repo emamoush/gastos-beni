@@ -3,7 +3,7 @@ const { createClient } = supabase;
 const sb = createClient(window.SUPABASE_CONFIG.SUPABASE_URL, window.SUPABASE_CONFIG.SUPABASE_ANON_KEY);
 
 let gastos = [];
-let filtroActual = 'todos';
+let filtroPersona = 'todos';
 let pagadorSeleccionado = 'Abigail';
 
 // ---------- Formato ----------
@@ -14,6 +14,27 @@ const fmtFecha = (iso) => {
   const [y, m, d] = iso.split('-');
   return `${d}/${m}/${y}`;
 };
+
+// ---------- Modo claro / oscuro ----------
+const btnTema = document.getElementById('toggle-tema');
+const iconoTema = document.getElementById('icono-tema');
+const textoTema = document.getElementById('texto-tema');
+
+function aplicarTema(modo) {
+  document.body.classList.toggle('oscuro', modo === 'oscuro');
+  iconoTema.textContent = modo === 'oscuro' ? '☀️' : '🌙';
+  textoTema.textContent = modo === 'oscuro' ? 'Modo claro' : 'Modo oscuro';
+}
+
+const temaGuardado = localStorage.getItem('gastos-beni-tema')
+  || (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'oscuro' : 'claro');
+aplicarTema(temaGuardado);
+
+btnTema.addEventListener('click', () => {
+  const nuevoModo = document.body.classList.contains('oscuro') ? 'claro' : 'oscuro';
+  aplicarTema(nuevoModo);
+  localStorage.setItem('gastos-beni-tema', nuevoModo);
+});
 
 // ---------- Selector de pagador (formulario) ----------
 document.querySelectorAll('#pill-pagador button').forEach((btn) => {
@@ -31,11 +52,42 @@ document.getElementById('g-fecha').valueAsDate = new Date();
 // ---------- Filtros ----------
 document.getElementById('filtro-tabs').addEventListener('click', (e) => {
   if (e.target.tagName !== 'BUTTON') return;
-  filtroActual = e.target.dataset.filtro;
+  filtroPersona = e.target.dataset.filtro;
   document.querySelectorAll('#filtro-tabs button').forEach((b) => b.classList.remove('activo'));
   e.target.classList.add('activo');
   renderizarLista();
 });
+
+const inputsFiltro = ['f-concepto', 'f-importe-min', 'f-importe-max', 'f-fecha-desde', 'f-fecha-hasta'];
+inputsFiltro.forEach((id) => {
+  document.getElementById(id).addEventListener('input', renderizarLista);
+});
+
+document.getElementById('btn-limpiar-filtros').addEventListener('click', () => {
+  inputsFiltro.forEach((id) => { document.getElementById(id).value = ''; });
+  filtroPersona = 'todos';
+  document.querySelectorAll('#filtro-tabs button').forEach((b) => b.classList.remove('activo'));
+  document.querySelector('#filtro-tabs button[data-filtro="todos"]').classList.add('activo');
+  renderizarLista();
+});
+
+function obtenerGastosFiltrados() {
+  const concepto = document.getElementById('f-concepto').value.trim().toLowerCase();
+  const importeMin = parseFloat(document.getElementById('f-importe-min').value);
+  const importeMax = parseFloat(document.getElementById('f-importe-max').value);
+  const fechaDesde = document.getElementById('f-fecha-desde').value;
+  const fechaHasta = document.getElementById('f-fecha-hasta').value;
+
+  return gastos.filter((g) => {
+    if (filtroPersona !== 'todos' && g.pagador !== filtroPersona) return false;
+    if (concepto && !g.concepto.toLowerCase().includes(concepto)) return false;
+    if (!isNaN(importeMin) && Number(g.importe) < importeMin) return false;
+    if (!isNaN(importeMax) && Number(g.importe) > importeMax) return false;
+    if (fechaDesde && g.fecha < fechaDesde) return false;
+    if (fechaHasta && g.fecha > fechaHasta) return false;
+    return true;
+  });
+}
 
 // ---------- Cargar gastos ----------
 async function cargarGastos() {
@@ -53,7 +105,7 @@ function renderizarTodo() {
   renderizarLista();
 }
 
-// ---------- Saldo ----------
+// ---------- Saldo (siempre sobre el total real, no sobre lo filtrado) ----------
 function renderizarSaldo() {
   const totalAbigail = gastos.filter((g) => g.pagador === 'Abigail').reduce((s, g) => s + Number(g.importe), 0);
   const totalBruno = gastos.filter((g) => g.pagador === 'Bruno').reduce((s, g) => s + Number(g.importe), 0);
@@ -88,13 +140,18 @@ function renderizarSaldo() {
   detalleEl.textContent = `Para que quede parejo, ${deudor} le debería transferir ${fmtMoneda(mitadDiferencia)} a ${acreedor}.`;
 }
 
-// ---------- Listado ----------
+// ---------- Listado (con todos los filtros aplicados) ----------
 function renderizarLista() {
   const cont = document.getElementById('tabla-gastos');
-  const lista = filtroActual === 'todos' ? gastos : gastos.filter((g) => g.pagador === filtroActual);
+  const contador = document.getElementById('contador-resultados');
+  const lista = obtenerGastosFiltrados();
+
+  contador.textContent = gastos.length === 0
+    ? ''
+    : `Mostrando ${lista.length} de ${gastos.length} gastos`;
 
   if (lista.length === 0) {
-    cont.innerHTML = `<div class="vacio">No hay gastos para mostrar acá todavía.</div>`;
+    cont.innerHTML = `<div class="vacio">No hay gastos que coincidan con estos filtros.</div>`;
     return;
   }
 

@@ -20,6 +20,24 @@
   --shadow: 0 1px 2px rgba(51, 54, 47, 0.06);
 }
 
+body.oscuro {
+  --bg: #22261F;
+  --card: #2B2F26;
+  --ink: #ECEEE6;
+  --ink-soft: #A4A99A;
+  --line: #3B4034;
+  --sage: #92AF88;
+  --sage-dark: #A9C39F;
+  --rose: #D9A6A1;
+  --rose-bg: #4A3634;
+  --blue: #9AB6C6;
+  --blue-bg: #2E3E45;
+  --gold: #E6C08E;
+  --gold-bg: #4A3D28;
+  --danger: #E0968A;
+  --shadow: 0 1px 2px rgba(0, 0, 0, 0.25);
+}
+
 * { box-sizing: border-box; }
 
 body {
@@ -28,6 +46,7 @@ body {
   color: var(--ink);
   font-family: 'Inter', system-ui, sans-serif;
   -webkit-font-smoothing: antialiased;
+  transition: background 0.2s ease, color 0.2s ease;
 }
 
 h1, h2, h3 { font-family: 'Space Grotesk', sans-serif; margin: 0; }
@@ -36,7 +55,7 @@ button, input, select { font-family: inherit; }
 
 .oculto { display: none !important; }
 
-/* ---------- Pantalla de login ---------- */
+/* ---------- Pantalla de login (sin uso actualmente, queda por si se reactiva) ---------- */
 
 .login-wrap {
   min-height: 100vh;
@@ -88,7 +107,7 @@ button, input, select { font-family: inherit; }
   border-radius: var(--radius-field);
   font-size: 14px;
   color: var(--ink);
-  background: #fff;
+  background: var(--card);
 }
 .campo input:focus, .campo select:focus, button:focus-visible {
   outline: 2px solid var(--sage);
@@ -146,6 +165,23 @@ button, input, select { font-family: inherit; }
   text-decoration: underline;
   text-underline-offset: 3px;
 }
+
+/* Toggle claro/oscuro */
+.toggle-tema {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 14px;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  background: var(--card);
+  color: var(--ink-soft);
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+}
+.toggle-tema:hover { border-color: var(--sage); color: var(--ink); }
+.toggle-tema .icono { font-size: 14px; line-height: 1; }
 
 main {
   max-width: 960px;
@@ -221,7 +257,7 @@ main {
   flex: 1;
   padding: 11px 0;
   border: none;
-  background: #fff;
+  background: var(--card);
   font-size: 13px;
   font-weight: 500;
   color: var(--ink-soft);
@@ -240,6 +276,35 @@ main {
 }
 .chip-fijo.abigail { background: var(--rose); }
 .chip-fijo.bruno { background: var(--blue); }
+
+/* Panel de filtros del historial */
+.panel-filtros {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-card);
+  padding: 20px 24px;
+  margin-bottom: 16px;
+  box-shadow: var(--shadow);
+}
+.filtros-grid {
+  display: grid;
+  grid-template-columns: 1.6fr 1fr 1fr 1fr 1fr auto;
+  gap: 12px;
+  align-items: end;
+}
+.filtros-grid .campo { margin-bottom: 0; }
+.filtros-grid .campo label { font-size: 12px; }
+.btn-limpiar {
+  padding: 11px 14px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-field);
+  background: var(--card);
+  color: var(--ink-soft);
+  font-size: 13px;
+  cursor: pointer;
+  white-space: nowrap;
+}
+.btn-limpiar:hover { border-color: var(--danger); color: var(--danger); }
 
 .btn-agregar {
   padding: 11px 18px;
@@ -268,12 +333,18 @@ main {
   padding: 6px 12px;
   border-radius: 999px;
   border: 1px solid var(--line);
-  background: #fff;
+  background: var(--card);
   font-size: 12px;
   color: var(--ink-soft);
   cursor: pointer;
 }
-.filtro-tabs button.activo { background: var(--ink); color: #fff; border-color: var(--ink); }
+.filtro-tabs button.activo { background: var(--ink); color: var(--bg); border-color: var(--ink); }
+
+.contador-resultados {
+  font-size: 12px;
+  color: var(--ink-soft);
+  margin-bottom: 10px;
+}
 
 .tabla-gastos {
   background: var(--card);
@@ -327,6 +398,7 @@ main {
 @media (max-width: 720px) {
   .totales { grid-template-columns: 1fr; }
   .form-gasto { grid-template-columns: 1fr; }
+  .filtros-grid { grid-template-columns: 1fr 1fr; }
   .fila-gasto {
     grid-template-columns: 1fr auto;
     grid-template-areas:

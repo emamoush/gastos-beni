@@ -5,8 +5,9 @@ y vean en cualquier momento si hay que compensar saldo entre ellos.
 
 No hay usuarios ni login: cualquiera que tenga el link puede entrar, cargar un gasto
 y elegir con la pastilla si pagó Abigail o Bruno. El historial queda visible para
-los dos, con fecha y quién figura como pagador, para que se puedan fijar ahí ante
-cualquier duda.
+los dos, con fecha y quién figura como pagador, y se puede filtrar por persona,
+concepto, rango de importe y rango de fechas para encontrar algo rápido o revisar
+ante cualquier duda.
 
 No necesitás usar la terminal para nada de esto: todo se hace desde el navegador.
 
@@ -16,12 +17,6 @@ No necesitás usar la terminal para nada de esto: todo se hace desde el navegado
 2. Andá a **SQL Editor** (menú izquierdo) → **New query**.
 3. Pegá el contenido del archivo `schema.sql` y tocá **Run**. Esto crea la tabla
    `gastos` y deja el acceso abierto (sin necesidad de loguearse).
-
-   > Si ya habías corrido una versión anterior de este `schema.sql` (con la tabla
-   > `perfiles` o el login), primero borrá esos objetos viejos desde el SQL Editor:
-   > `drop table if exists public.perfiles cascade;` y `drop table if exists public.gastos cascade;`
-   > — después corré el `schema.sql` nuevo.
-
 4. Andá a **Project Settings → API**. Vas a necesitar dos valores:
    - **Project URL**
    - **anon public key**
@@ -46,10 +41,23 @@ No necesitás usar la terminal para nada de esto: todo se hace desde el navegado
 3. Como es un sitio estático (sin build), dejá los campos de configuración por defecto
    y tocá Deploy.
 
-## 3. Probarla
+Si ya tenías esta página desplegada en Vercel de una vez anterior, solo hace falta
+volver a subir esta carpeta actualizada (arrastrándola de nuevo, o subiendo los
+archivos nuevos al mismo repo de GitHub) — no hace falta tocar nada en Supabase.
 
-Entrá a la URL que te da Vercel y cargá un par de gastos de prueba (uno a nombre de
-Abigail y otro de Bruno) para ver que el saldo se calcule bien.
+## 3. Qué hay de nuevo en esta versión
+
+- **Filtros del historial**: además de elegir Abigail/Bruno con las pestañas, ahora
+  se puede buscar por texto en el concepto, poner un importe mínimo y/o máximo, y
+  acotar por rango de fechas (desde/hasta). Todos los filtros se combinan entre sí,
+  y hay un botón "Limpiar filtros" para volver a ver todo.
+- **Modo claro / oscuro**: el botón con el icono de luna/sol, arriba a la derecha,
+  cambia el tema. Queda guardado en el navegador de cada uno (localStorage), así que
+  no hace falta volver a elegirlo cada vez que entran.
+
+El saldo y los totales de arriba siempre se calculan sobre **todos** los gastos
+cargados, no sobre lo que esté filtrado en ese momento — los filtros son solo para
+mirar el historial, no afectan el cálculo de cuánto se debe cada uno.
 
 ## Cómo funciona el cálculo de saldo
 
@@ -64,7 +72,7 @@ dividir los gastos en otra proporción (no 50/50), decímelo y lo ajustamos.
   tenga puede cargar o borrar gastos. Compartíselo solo a Abigail y Bruno.
 - Cualquiera de los dos puede borrar cualquier gasto (no solo los propios). El
   historial con fecha y pagador queda para que puedan revisar entre ellos si hace
-  falta. Si más adelante preferís algo más restrictivo, avisame y lo ajustamos.
+  falta.
 
 ## Si algo falla
 

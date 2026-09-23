@@ -2,8 +2,8 @@
 -- Ejecutar esto en Supabase: Panel > SQL Editor > New query > pegar y correr (Run)
 --
 -- No hay login: cualquiera que entre a la página puede cargar, ver y borrar gastos,
--- eligiendo con la pastilla si pagó Abigail o Bruno. El historial deja registrado
--- cada carga con fecha y hora para que, ante cualquier duda, se pueda revisar.
+-- eligiendo con la pastilla si pagó Abigail o Bruno. El historial queda registrado
+-- con fecha y hora para que, ante cualquier duda, se pueda revisar.
 
 create table if not exists public.gastos (
   id uuid primary key default gen_random_uuid(),
